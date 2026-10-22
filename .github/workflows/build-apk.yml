@@ -53,7 +53,8 @@ jobs:
               raise SystemExit("Could not find expected launcher label; stopping safely.")
           p.write_text(s.replace(old, new, 1))
           PY
-          python3 cloudfox_patch.py
+          cd upstream
+          python3 ../cloudfox_patch.py
 
       - name: Build release APK
         working-directory: upstream
