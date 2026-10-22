@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/build-apk.yml'
       - 'README.md'
+      - 'cloudfox_patch.py'
 
 permissions:
   contents: read
@@ -39,13 +40,12 @@ jobs:
           cache: true
           cache-dependency-path: upstream/app/pubspec.lock
 
-      - name: Apply CloudFox launcher identity
-        working-directory: upstream
+      - name: Apply CloudFox branding and redesigned home screen
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p = Path("app/android/app/src/main/res/values/strings.xml")
+          p = Path("upstream/app/android/app/src/main/res/values/strings.xml")
           s = p.read_text()
           old = '<string name="app_name" translatable="false">L×Box</string>'
           new = '<string name="app_name" translatable="false">CloudFox VPN</string>'
@@ -53,6 +53,7 @@ jobs:
               raise SystemExit("Could not find expected launcher label; stopping safely.")
           p.write_text(s.replace(old, new, 1))
           PY
+          python3 cloudfox_patch.py
 
       - name: Build release APK
         working-directory: upstream
