@@ -1,0 +1,11 @@
+{
+  "attribution": {
+    "text": "Free public configurations collected from community sources. Untrusted servers; use at your own risk.",
+    "link": "https://github.com/Alirewa/V2ray-Configs"
+  },
+  "lists": [
+    {
+      "source": "https://raw.githubusercontent.com/Alirewa/V2ray-Configs/main/config.txt"
+    }
+  ]
+}
