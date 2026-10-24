@@ -19,8 +19,11 @@ jobs:
       - name: Checkout CloudFox build configuration
         uses: actions/checkout@v4
 
-      - name: Checkout upstream VPN engine app
-        run: git clone --filter=blob:none https://github.com/Leadaxe/LxBox.git upstream
+      - name: Checkout upstream VPN engine app (WARP fixes, LxBox v2.25.17)
+        run: |
+          git clone --filter=blob:none https://github.com/Leadaxe/LxBox.git upstream
+          git -C upstream checkout b64ea6206ad07ed79efeac3c6f92a2b2c0bbf58f
+          git -C upstream log -1 --oneline
 
       - name: Set up Java
         uses: actions/setup-java@v4
