@@ -158,3 +158,28 @@ class _TrafficCard extends StatelessWidget {
 }
 ''')
 print("CloudFox home panel patch applied.")
+
+# Enable the existing public-server picker and point it to CloudFox's maintained
+# manifest. This reuses the upstream subscription parser; no server credentials
+# are embedded in the APK.
+loader = root / "services/community_servers_loader.dart"
+ls = loader.read_text()
+old_enabled = "static const enabled = false;"
+if old_enabled in ls:
+    ls = ls.replace(old_enabled, "static const enabled = true;", 1)
+elif "static const enabled = true;" not in ls:
+    raise SystemExit("Could not find community server enable flag")
+old_url = "https://raw.githubusercontent.com/Leadaxe/LxBox/main/public-servers-manifest.json"
+new_url = "https://raw.githubusercontent.com/mamadoo11/cloudfox-vpn/main/free-servers-manifest.json"
+if old_url in ls:
+    ls = ls.replace(old_url, new_url, 1)
+elif new_url not in ls:
+    raise SystemExit("Could not find community server manifest URL")
+loader.write_text(ls)
+
+server_picker = root / "screens/subscriptions_screen/public_test_servers.dart"
+ps = server_picker.read_text()
+ps = ps.replace('getLocalText.s("Get Public Test Servers")', 'getLocalText.s("Free Servers")', 1)
+ps = ps.replace('getLocalText.s("List %d", i + 1)', 'getLocalText.s("Free server source %d", i + 1)', 1)
+server_picker.write_text(ps)
+print("CloudFox free server source enabled.")
